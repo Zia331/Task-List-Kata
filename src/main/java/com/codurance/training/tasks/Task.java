@@ -1,6 +1,6 @@
 package com.codurance.training.tasks;
 
-public final class Task {
+public final class Task implements TaskInterface {
     private final long id;
     private final String description;
     private boolean done;
@@ -26,4 +26,16 @@ public final class Task {
     public void setDone(boolean done) {
         this.done = done;
     }
+
+    public String show() {
+        return String.format("    [%c] %d: %s%n", (this.done ? 'x' : ' '), this.id, this.description);
+    }
+
+//    public void check() {
+//        this.done = true;
+//    }
+//
+//    public void uncheck() {
+//        this.done = false;
+//    }
 }
