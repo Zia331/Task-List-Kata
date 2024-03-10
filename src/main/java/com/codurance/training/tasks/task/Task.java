@@ -1,4 +1,6 @@
-package com.codurance.training.tasks;
+package com.codurance.training.tasks.task;
+
+import com.codurance.training.tasks.TaskInterface;
 
 public final class Task implements TaskInterface {
     private final long id;
@@ -15,10 +17,6 @@ public final class Task implements TaskInterface {
         return id;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public boolean isDone() {
         return done;
     }
@@ -30,12 +28,4 @@ public final class Task implements TaskInterface {
     public String show() {
         return String.format("    [%c] %d: %s%n", (this.done ? 'x' : ' '), this.id, this.description);
     }
-
-//    public void check() {
-//        this.done = true;
-//    }
-//
-//    public void uncheck() {
-//        this.done = false;
-//    }
 }

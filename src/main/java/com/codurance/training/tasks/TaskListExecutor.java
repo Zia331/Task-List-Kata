@@ -1,91 +1,58 @@
 package com.codurance.training.tasks;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import com.codurance.training.tasks.command.*;
+import com.codurance.training.tasks.task.TaskList;
 
-public class TaskListExecutor implements Runnable{
-    private static final String QUIT = "quit";
-    private final BufferedReader in;
-    private final PrintWriter out;
+import java.util.Objects;
+
+public class TaskListExecutor implements CommandInterface{
     private final TaskList taskList;
+    private final ErrorCommand error = new ErrorCommand();
+    private final AddCommand add;
+    private final CheckCommand check;
+    private final UncheckCommand uncheck;
 
-    public static void main(String[] args) throws Exception {
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        PrintWriter out = new PrintWriter(System.out);
-        new TaskListExecutor(in, out, new TaskList()).run();
-    }
-
-    public TaskListExecutor(BufferedReader reader, PrintWriter writer, TaskList taskList) {
-        this.in = reader;
-        this.out = writer;
+    public TaskListExecutor(TaskList taskList) {
         this.taskList = taskList;
+        this.add = new AddCommand(taskList);
+        this.check = new CheckCommand(taskList);
+        this.uncheck = new UncheckCommand(taskList);
     }
 
-    public void run() {
-        while (true) {
-            out.print("> ");
-            out.flush();
-            String command;
-            try {
-                command = in.readLine();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            if (command.equals(QUIT)) {
-                break;
-            }
-            execute(command);
-        }
-    }
-
-    private void execute(String commandLine) {
+    public String execute(String commandLine) {
         String[] commandRest = commandLine.split(" ", 2);
         String command = commandRest[0];
         switch (command) {
             case "show":
-                out.print(taskList.show());
-                break;
+                return taskList.show();
             case "add":
-                if(!taskList.add(commandRest[1])){
-                    out.printf("Could not find a project with the name \"%s\".", commandRest[1]);
-                    out.println();
-                }
-                break;
+                String res_add = add.execute(commandRest[1]);
+                if(Objects.equals(res_add, "failed")){
+                    return String.format("Could not find a project with the name \"%s\".\n", commandRest[1]);
+                }else return res_add;
             case "check":
-                if(!taskList.check(commandRest[1])){
-                    out.printf("Could not find a task with an ID of %s.", commandRest[1]);
-                    out.println();
-                }
-                break;
+                String res_check = check.execute(commandRest[1]);
+                if(Objects.equals(res_check, "failed")){
+                    return String.format("Could not find a task with an ID of %s.", commandRest[1]);
+                }else return res_check;
             case "uncheck":
-                if(!taskList.uncheck(commandRest[1])){
-                    out.printf("Could not find a task with an ID of %s.", commandRest[1]);
-                    out.println();
-                }
-                break;
+                String res_uncheck = uncheck.execute(commandRest[1]);
+                if(Objects.equals(res_uncheck, "failed")){
+                    return String.format("Could not find a task with an ID of %s.", commandRest[1]);
+                }else return res_uncheck;
             case "help":
-                help();
-                break;
+                return help();
             default:
-                error(command);
-                break;
+                return error.execute(command);
         }
     }
 
-    private void help() {
-        out.println("Commands:");
-        out.println("  show");
-        out.println("  add project <project name>");
-        out.println("  add task <project name> <task description>");
-        out.println("  check <task ID>");
-        out.println("  uncheck <task ID>");
-        out.println();
-    }
-
-    private void error(String command) {
-        out.printf("I don't know what the command \"%s\" is.", command);
-        out.println();
+    private String help() {
+        return "Commands:"
+            .concat("  show")
+            .concat("  add project <project name>")
+            .concat("  add task <project name> <task description>")
+            .concat("  check <task ID>")
+            .concat("  uncheck <task ID>");
     }
 }
