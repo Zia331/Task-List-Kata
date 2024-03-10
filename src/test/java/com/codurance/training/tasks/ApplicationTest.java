@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintWriter;
+
+import com.codurance.training.tasks.task.TaskList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,8 +29,8 @@ public final class ApplicationTest {
     public ApplicationTest() throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(new PipedInputStream(inStream)));
         PrintWriter out = new PrintWriter(new PipedOutputStream(outStream), true);
-        TaskListExecutor runTaskList = new TaskListExecutor(in,out,new TaskList());
-//        TaskList taskList = new TaskList(in, out);
+        TaskListExecutor taskListExecutor = new TaskListExecutor(new TaskList());
+        TaskListApp runTaskList = new TaskListApp(in, out, taskListExecutor);
         applicationThread = new Thread(runTaskList);
     }
 
@@ -77,7 +79,7 @@ public final class ApplicationTest {
         execute("add task training Interaction-Driven Design");
 
         execute("check 1");
-        execute("check 3"); 
+        execute("check 3");
         execute("check 5");
         execute("check 6");
 

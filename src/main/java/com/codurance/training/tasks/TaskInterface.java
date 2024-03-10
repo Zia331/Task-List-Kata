@@ -2,8 +2,6 @@ package com.codurance.training.tasks;
 
 public interface TaskInterface {
     String show();
-
-//    void check();
-//
-//    void uncheck();
+    boolean isDone();
+    void setDone(boolean isDone);
 }
