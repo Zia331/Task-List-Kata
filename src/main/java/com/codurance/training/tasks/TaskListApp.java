@@ -43,7 +43,7 @@ public class TaskListApp implements Runnable{
 
             String res = executor.execute(command);
             if(Objects.equals(res, "success")){
-
+                continue;
             }else{
                 out.print(res);
             }
