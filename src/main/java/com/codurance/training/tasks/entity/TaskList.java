@@ -1,4 +1,4 @@
-package com.codurance.training.tasks.task;
+package com.codurance.training.tasks.entity;
 
 import java.util.ArrayList;
 import java.util.Objects;
