@@ -1,10 +1,11 @@
 package com.codurance.training.tasks.entity;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public final class TaskList {
-    private final ArrayList<Project> projects = new ArrayList<>();
+    private final List<Project> projects = new ArrayList<>();
     private long lastId = 0;
     public TaskList() {}
 
@@ -42,7 +43,7 @@ public final class TaskList {
         }
     }
 
-    public ArrayList<Project> getProjects(){
+    public List<Project> getProjects(){
         return projects;
     }
 
