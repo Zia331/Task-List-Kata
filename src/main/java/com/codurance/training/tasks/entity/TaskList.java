@@ -8,18 +8,6 @@ public final class TaskList {
     private long lastId = 0;
     public TaskList() {}
 
-    public String show(){
-        StringBuilder result = new StringBuilder();
-        for (Project project : projects){
-            result.append(project.getName()).append("\n");
-            for (Task task : project.getTasks()){
-                result.append(task.show());
-            }
-            result.append("\n");
-        }
-        return result.toString();
-    }
-
     public boolean setDone(String idString, boolean done) {
         int id = Integer.parseInt(idString);
         for (Project project : projects){
@@ -33,18 +21,29 @@ public final class TaskList {
         return false;
     }
 
-    public void addProject(String name) {
-        projects.add(new Project(name));
-    }
-
-    public boolean addTask(String project, String description) {
+    public boolean isProjectAvailable(String name){
         for (Project p: projects){
-            if(Objects.equals(p.getName(),project)){
-                p.add(new Task(nextId(), description, false));
+            if(Objects.equals(p.getName(),name)){
                 return true;
             }
         }
         return false;
+    }
+
+    public void addProject(String name) {
+        projects.add(new Project(name));
+    }
+
+    public void addTask(String project, String description) {
+        for (Project p: projects){
+            if(Objects.equals(p.getName(),project)){
+                p.add(new Task(nextId(), description, false));
+            }
+        }
+    }
+
+    public ArrayList<Project> getProjects(){
+        return projects;
     }
 
     private long nextId() {
