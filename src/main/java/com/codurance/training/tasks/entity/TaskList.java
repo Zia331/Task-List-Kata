@@ -1,8 +1,6 @@
 package com.codurance.training.tasks.entity;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
 
 public final class TaskList {
     private final List<Project> projects = new ArrayList<>();
@@ -10,11 +8,11 @@ public final class TaskList {
     public TaskList() {}
 
     public boolean setDone(String idString, boolean done) {
-        int id = Integer.parseInt(idString);
+        long taskId = Long.parseLong(idString);
         for (Project project : projects){
-            for (Task task : project.getTasks()) {
-                if (task.getId() == id) {
-                    task.setDone(done);
+            for (Long id : project.getTaskIds()) {
+                if (taskId == id) {
+                    project.setTaskStatus(taskId, done);
                     return true;
                 }
             }
@@ -43,8 +41,30 @@ public final class TaskList {
         }
     }
 
-    public List<Project> getProjects(){
-        return projects;
+    public Map<String,List<Long>> getProjectAndTasks(){
+        Map<String,List<Long>> info = new LinkedHashMap<>();
+        for(Project p: projects){
+            info.put(p.getName(),p.getTaskIds());
+        }
+        return info;
+    }
+
+    public String getTaskDescription(String projectName, Long taskId){
+        for (Project p: projects){
+            if(Objects.equals(p.getName(),projectName)){
+                return p.getTaskDescription(taskId);
+            }
+        }
+        return "";
+    }
+
+    public Boolean getTaskStatus(String projectName, Long taskId){
+        for (Project p: projects){
+            if(Objects.equals(p.getName(),projectName)){
+                return p.getTaskStatus(taskId);
+            }
+        }
+        return false;
     }
 
     private long nextId() {

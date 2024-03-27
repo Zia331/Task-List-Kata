@@ -3,6 +3,9 @@ package com.codurance.training.tasks.usecase.commands;
 import com.codurance.training.tasks.entity.*;
 import com.codurance.training.tasks.usecase.CommandInterface;
 
+import java.util.List;
+import java.util.Map;
+
 public class ShowCommand implements CommandInterface {
     private final TaskList taskList;
 
@@ -13,10 +16,19 @@ public class ShowCommand implements CommandInterface {
     @Override
     public String execute(String commandLine) {
         StringBuilder result = new StringBuilder();
-        for (Project project : taskList.getProjects()){
-            result.append(project.getName()).append("\n");
-            for (Task task : project.getTasks()){
-                String taskInfo = String.format("    [%c] %d: %s%n", (task.isDone() ? 'x' : ' '), task.getId(), task.getDescription());
+        for (Map.Entry<String, List<Long>> entry : taskList.getProjectAndTasks().entrySet()){
+            String projectName = entry.getKey();
+            List<Long> taskIds = entry.getValue();
+
+            result.append(projectName).append("\n");
+
+            for (Long taskId: taskIds){
+                String taskInfo = String.format(
+                        "    [%c] %d: %s%n",
+                        (taskList.getTaskStatus(projectName,taskId) ? 'x' : ' '),
+                        taskId,
+                        taskList.getTaskDescription(projectName,taskId)
+                );
                 result.append(taskInfo);
             }
             result.append("\n");

@@ -1,14 +1,11 @@
 package com.codurance.training.tasks.adapter.controllers;
 
-import com.codurance.training.tasks.usecase.commands.AddProjectCommand;
-import com.codurance.training.tasks.usecase.commands.AddTaskCommand;
+import com.codurance.training.tasks.usecase.TaskListCommand;
 
 public class AddController implements ControllerInterface{
-    private final AddProjectCommand addProjectCommand;
-    private final AddTaskCommand addTaskCommand;
-    public AddController(AddProjectCommand addProjectCommand, AddTaskCommand addTaskCommand){
-        this.addProjectCommand = addProjectCommand;
-        this.addTaskCommand =addTaskCommand;
+    private final TaskListCommand taskListCommand;
+    public AddController(TaskListCommand taskListCommand){
+        this.taskListCommand = taskListCommand;
     }
 
     @Override
@@ -17,9 +14,9 @@ public class AddController implements ControllerInterface{
         String subcommand = subcommandRest[0];
 
         if (subcommand.equals("project")) {
-            return addProjectCommand.execute(subcommandRest[1]);
+            return taskListCommand.execute("addProject "+subcommandRest[1]);
         } else if (subcommand.equals("task")) {
-            return addTaskCommand.execute(subcommandRest[1]);
+            return taskListCommand.execute("addTask "+subcommandRest[1]);
         }
         return "failed";
     }

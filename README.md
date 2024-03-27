@@ -1,24 +1,39 @@
 # Task-List-Kata
 NTUT 112-2 Software Architecture Lesson
 
-## HW3
+## HW4
 
 ### Refactored parts
-- Use 4 layers
-  - Add TaskListIO under io
-    - Dependency injection for IO of TaskListApp
-  - Add command controllers and command presenter under controllers
-    - CommandController
+- 4 layers
+  - **IO**
+    - _TaskListIO_
+      - Dependency injection for IO of TaskListApp
+    - _TaskListApp_
+      - Depends on _CommandController_, _CommandPresenter_ and _TaskListIOInterface_ to work
+  - **Controllers**
+    - _CommandController_
       - Create each controller and corresponding command with task list specified
-    - CommandPresenter
-      - Process the output of each command execution and return to TaskListIO
-  - Place commands under use cases
-  - Place Task, Project and TaskList under entity
+    - _CommandPresenter_
+      - Process the output of each command execution and return to _TaskListIO_
+  - **Use cases**
+    - commands: every command use cases that may be used
+    - _TaskListCommand_ `#new`
+      - works between _CommandController_ and commands
+  - **Entity**
+    - _Task_
+    - _Project_
+    - _TaskList_
     
 ### Notes
-- Tried to avoid dependencies from inner to outer layer
-- Tried to avoid implicit dependencies
-  - still exists in controllers that do not interact with TaskList
-  - ShowCommand implicitly depends on Project and Task
-- Ensured no data member is extraneous for the class itself
-- Ensured that use cases are stateless
+- Avoid dependencies from inner to outer layer
+- Avoid implicit dependencies
+- No data member is extraneous for the class itself
+- Use cases should be stateless
+- Controllers should not know the exact command to create `#new`
+- Avoid breaking encapsulation `#new`
+  - i.e. `getProjects()` in _TaskList_, `getTasks` in _Project_ that return the _Task_ and _Project_ directly
+  - Now _TaskList_ can only get the information of a _Task_ by calling public methods provided by _Project_, which depend on public methods provided by _Task_ itself. 
+
+
+### TO-DO
+- Possible ways for the _TaskListApp_ to depend on fewer entities?
