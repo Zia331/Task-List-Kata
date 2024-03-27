@@ -1,16 +1,15 @@
 package com.codurance.training.tasks.adapter.controllers;
 
-import com.codurance.training.tasks.entity.TaskList;
-import com.codurance.training.tasks.usecase.commands.CheckCommand;
+import com.codurance.training.tasks.usecase.TaskListCommand;
 
 public class CheckController implements ControllerInterface{
-    private final CheckCommand checkCommand;
-    public CheckController(CheckCommand checkCommand){
-        this.checkCommand = checkCommand;
+    private final TaskListCommand taskListCommand;
+    public CheckController(TaskListCommand taskListCommand){
+        this.taskListCommand = taskListCommand;
     }
 
     @Override
     public String parse(String taskId) {
-        return checkCommand.execute(taskId);
+        return taskListCommand.execute("check "+taskId);
     }
 }

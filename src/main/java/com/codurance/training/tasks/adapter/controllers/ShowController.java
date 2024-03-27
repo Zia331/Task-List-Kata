@@ -1,15 +1,15 @@
 package com.codurance.training.tasks.adapter.controllers;
 
-import com.codurance.training.tasks.usecase.commands.ShowCommand;
+import com.codurance.training.tasks.usecase.TaskListCommand;
 
 public class ShowController implements ControllerInterface{
-    private final ShowCommand showCommand;
-    public ShowController(ShowCommand showCommand){
-        this.showCommand = showCommand;
+    private final TaskListCommand taskListCommand;
+    public ShowController(TaskListCommand taskListCommand){
+        this.taskListCommand = taskListCommand;
     }
 
     @Override
     public String parse(String commandLine) {
-        return showCommand.execute(commandLine);
+        return taskListCommand.execute("show "+commandLine);
     }
 }

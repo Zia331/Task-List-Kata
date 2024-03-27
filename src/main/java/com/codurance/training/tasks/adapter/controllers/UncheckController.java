@@ -1,18 +1,14 @@
 package com.codurance.training.tasks.adapter.controllers;
 
-import com.codurance.training.tasks.entity.TaskList;
-import com.codurance.training.tasks.usecase.commands.CheckCommand;
-import com.codurance.training.tasks.usecase.commands.UncheckCommand;
-
+import com.codurance.training.tasks.usecase.TaskListCommand;
 public class UncheckController implements ControllerInterface{
-    private final UncheckCommand uncheckCommand;
-
-    public UncheckController(UncheckCommand uncheckCommand){
-        this.uncheckCommand = uncheckCommand;
+    private final TaskListCommand taskListCommand;
+    public UncheckController(TaskListCommand taskListCommand){
+        this.taskListCommand = taskListCommand;
     }
 
     @Override
     public String parse(String taskId) {
-        return uncheckCommand.execute(taskId);
+        return taskListCommand.execute("uncheck "+taskId);
     }
 }
