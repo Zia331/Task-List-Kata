@@ -39,7 +39,7 @@ public class CommandController {
         String command = commandRest[0];
         Function<String, String> controller = controllers.getOrDefault(command, cmd -> {
             ErrorController errorController = new ErrorController();
-            return errorController.parse(cmd);
+            return errorController.parse(command);
         });
 
         return controller.apply(commandRest.length > 1 ? commandRest[1] : "");
