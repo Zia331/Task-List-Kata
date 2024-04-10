@@ -1,7 +1,7 @@
 # Task-List-Kata
 NTUT 112-2 Software Architecture Lesson
 
-## HW4
+## HW5
 
 ### Refactored parts
 - 4 layers
@@ -23,7 +23,10 @@ NTUT 112-2 Software Architecture Lesson
     - _Task_
     - _Project_
     - _TaskList_
-    
+- Apply DDD tactical designs
+  - Entity for Task and Project
+  - ValueObject for TaskId and ProjectName
+
 ### Notes
 - Avoid dependencies from inner to outer layer
 - Avoid implicit dependencies
@@ -32,8 +35,9 @@ NTUT 112-2 Software Architecture Lesson
 - Controllers should not know the exact command to create `#new`
 - Avoid breaking encapsulation `#new`
   - i.e. `getProjects()` in _TaskList_, `getTasks` in _Project_ that return the _Task_ and _Project_ directly
-  - Now _TaskList_ can only get the information of a _Task_ by calling public methods provided by _Project_, which depend on public methods provided by _Task_ itself. 
+  - Now _TaskList_ can only get the information of a _Task_ by calling public methods provided by _Project_, which depend on public methods provided by _Task_ itself.
 
 
 ### TO-DO
 - Possible ways for the _TaskListApp_ to depend on fewer entities?
+- AggregateRoot
