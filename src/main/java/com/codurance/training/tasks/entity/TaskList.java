@@ -8,12 +8,13 @@ public final class TaskList {
     public TaskList() {}
 
     public boolean setDone(String idString, boolean done) {
-        long taskId = Long.parseLong(idString);
         for (Project project : projects){
-            for (Long id : project.getTaskIds()) {
-                if (taskId == id) {
-                    project.setTaskStatus(taskId, done);
-                    return true;
+            for (TaskId id : project.getTaskIds()) {
+                if (Objects.equals(idString, id.toString())) {
+                    TaskId taskId = project.getTaskId(idString);
+                    if(project.setTaskStatus(taskId, done)){
+                        return true;
+                    }
                 }
             }
         }
@@ -22,7 +23,7 @@ public final class TaskList {
 
     public boolean isProjectAvailable(String name){
         for (Project p: projects){
-            if(Objects.equals(p.getName(),name)){
+            if(Objects.equals(p.getName().toString(),name)){
                 return true;
             }
         }
@@ -30,37 +31,37 @@ public final class TaskList {
     }
 
     public void addProject(String name) {
-        projects.add(new Project(name));
+        projects.add(new Project(new ProjectName(name)));
     }
 
     public void addTask(String project, String description) {
         for (Project p: projects){
-            if(Objects.equals(p.getName(),project)){
-                p.add(new Task(nextId(), description, false));
+            if(Objects.equals(p.getName().toString(),project)){
+                p.add(new Task(new TaskId(Long.toString(nextId())), description, false));
             }
         }
     }
 
-    public Map<String,List<Long>> getProjectAndTasks(){
-        Map<String,List<Long>> info = new LinkedHashMap<>();
+    public Map<String,List<TaskId>> getProjectAndTasks(){
+        Map<String,List<TaskId>> info = new LinkedHashMap<>();
         for(Project p: projects){
-            info.put(p.getName(),p.getTaskIds());
+            info.put(p.getName().toString(),p.getTaskIds());
         }
         return info;
     }
 
-    public String getTaskDescription(String projectName, Long taskId){
+    public String getTaskDescription(String projectName, TaskId taskId){
         for (Project p: projects){
-            if(Objects.equals(p.getName(),projectName)){
+            if(Objects.equals(p.getName().toString(),projectName)){
                 return p.getTaskDescription(taskId);
             }
         }
         return "";
     }
 
-    public Boolean getTaskStatus(String projectName, Long taskId){
+    public Boolean getTaskStatus(String projectName, TaskId taskId){
         for (Project p: projects){
-            if(Objects.equals(p.getName(),projectName)){
+            if(Objects.equals(p.getName().toString(),projectName)){
                 return p.getTaskStatus(taskId);
             }
         }

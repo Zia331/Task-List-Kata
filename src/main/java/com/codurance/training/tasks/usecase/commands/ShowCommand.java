@@ -16,17 +16,17 @@ public class ShowCommand implements CommandInterface {
     @Override
     public String execute(String commandLine) {
         StringBuilder result = new StringBuilder();
-        for (Map.Entry<String, List<Long>> entry : taskList.getProjectAndTasks().entrySet()){
+        for (Map.Entry<String, List<TaskId>> entry : taskList.getProjectAndTasks().entrySet()){
             String projectName = entry.getKey();
-            List<Long> taskIds = entry.getValue();
+            List<TaskId> taskIds = entry.getValue();
 
             result.append(projectName).append("\n");
 
-            for (Long taskId: taskIds){
+            for (TaskId taskId: taskIds){
                 String taskInfo = String.format(
-                        "    [%c] %d: %s%n",
+                        "    [%c] %s: %s%n",
                         (taskList.getTaskStatus(projectName,taskId) ? 'x' : ' '),
-                        taskId,
+                        taskId.toString(),
                         taskList.getTaskDescription(projectName,taskId)
                 );
                 result.append(taskInfo);
