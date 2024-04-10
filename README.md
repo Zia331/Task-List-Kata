@@ -1,7 +1,7 @@
 # Task-List-Kata
 NTUT 112-2 Software Architecture Lesson
 
-## HW4
+## HW5
 
 ### Refactored parts
 - 4 layers
@@ -23,6 +23,9 @@ NTUT 112-2 Software Architecture Lesson
     - _Task_
     - _Project_
     - _TaskList_
+- Apply DDD tactical designs
+  - Entity for Task and Project
+  - ValueObject for TaskId and ProjectName
     
 ### Notes
 - Avoid dependencies from inner to outer layer
@@ -37,3 +40,4 @@ NTUT 112-2 Software Architecture Lesson
 
 ### TO-DO
 - Possible ways for the _TaskListApp_ to depend on fewer entities?
+- AggregateRoot
